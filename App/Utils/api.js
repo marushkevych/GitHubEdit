@@ -2,13 +2,13 @@ var URL = 'https://api.github.com/repos/marushkevych/marushkevych.github.io/cont
 
 
 var api = {
-	getPages: function(username, token){
+	getPages: function(username){
 		return doFetch(URL);
 	},	
-	getContent: function(url, token){
+	getContent: function(url){
 		return doFetch(url);
 	},
-    updatePage: function(url, content, sha, TOKEN){
+    updatePage: function(url, content, sha){
     	var body = {
 		  message: "updating",
 		  committer: {
@@ -22,7 +22,7 @@ var api = {
 		var conf = 	{
 			method: 'put',
 		  	headers: {
-				'Authorization': 'token 2c8cd72a20d52ce11b3b1a79f66db31bb3817a22'
+				'Authorization': getToken()
 			},
 			body: JSON.stringify(body)
 		};
@@ -46,6 +46,10 @@ var api = {
 	}
 
 };
+
+function getToken(){
+	return 'token 123';
+}
 
 function doFetch(url, conf){
 	return fetch(url, conf).then((res) => {

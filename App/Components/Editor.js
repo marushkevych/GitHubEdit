@@ -12,7 +12,6 @@ var {
     TextInput
 } = React;
 
-var TOKEN = '3631fc18a25572cfc25719c4d0d75302169b13a7';
 var USER = 'marushkevych';
 
 
@@ -26,7 +25,7 @@ class Editor extends React.Component{
       sha: ''
     }
 
-    api.getContent(this.props.url, TOKEN).then((res) => {
+    api.getContent(this.props.url).then((res) => {
       this.setState({
         isLoading: false, 
         content: b64_to_utf8(res.content),
@@ -40,7 +39,7 @@ class Editor extends React.Component{
   save(){
     var content = utf8_to_b64(this.state.content);
     console.log('submitting content', content);
-    api.updatePage(this.props.url, content, this.state.sha, TOKEN).then((res) => {
+    api.updatePage(this.props.url, content, this.state.sha).then((res) => {
       this.setState({isLoading: false});
     }, (err) => {
       this.setState({isLoading: false, error: "Failed to save changes"});

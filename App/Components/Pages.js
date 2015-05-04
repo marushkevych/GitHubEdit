@@ -11,7 +11,6 @@ var {
     ActivityIndicatorIOS
 } = React;
 
-var TOKEN = '3631fc18a25572cfc25719c4d0d75302169b13a7';
 var USER = 'marushkevych';
 
 
@@ -24,7 +23,7 @@ class Pages extends React.Component{
       error: false
     }
 
-    api.getPages(USER, TOKEN).then((res) => {
+    api.getPages(USER).then((res) => {
       this.setState({isLoading: false, pages: res});
     }, (err) => {
       this.setState({isLoading: false, error: "Failes to get pages"});
