@@ -8,7 +8,9 @@ var api = {
 	getContent: function(url){
 		return doFetch(url);
 	},
-    updatePage: function(url, content, sha){
+    updatePage: function(url, content, sha, token){
+
+
     	var body = {
 		  message: "updating",
 		  committer: {
@@ -22,7 +24,7 @@ var api = {
 		var conf = 	{
 			method: 'put',
 		  	headers: {
-				'Authorization': getToken()
+				'Authorization': 'token ' + token
 			},
 			body: JSON.stringify(body)
 		};
@@ -33,30 +35,17 @@ var api = {
     },
 
 
-	getNotes: function(username){
-		username = username.toLowerCase().trim();
-		return doFetch(`https://github-notes-saver.firebaseio.com//${username}.json`);
-	},
-	addNote: function(username, note){
-		username = username.toLowerCase().trim();
-		return doFetch(`https://github-notes-saver.firebaseio.com//${username}.json`, {
-			method: 'post',
-			body: JSON.stringify(note)
-		});
-	}
 
 };
 
-function getToken(){
-	return 'token 123';
-}
 
 function doFetch(url, conf){
 	return fetch(url, conf).then((res) => {
+		console.log('got response', res)
 		return res.json().then((json) => {
-			console.log('got response', json)
-			if(json && json.message === 'Not Found'){
-				throw new Error("Not Found");
+			console.log('got response json', json)
+			if(res.status >= 400){
+				throw new Error(json.message)
 			}
 			return json;	
 		})		
