@@ -20,21 +20,18 @@ var {
 	AsyncStorage
 } = React;
 
-var STORAGE_KEY = "token.key";
-AsyncStorage.removeItem(STORAGE_KEY)
-
+// AsyncStorage.removeItem("token.key")
 
 
 class GitHubEdit extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			editing: false,
 			token: null
 		};
 
 
-		AsyncStorage.getItem(STORAGE_KEY).then((token)=>{
+		AsyncStorage.getItem("token.key").then((token)=>{
 			this.setState({token});
 		})
 	}
@@ -46,7 +43,7 @@ class GitHubEdit extends React.Component{
 		})
 	}
 	setToken(token){
-		AsyncStorage.setItem(STORAGE_KEY, token).then(()=>{
+		AsyncStorage.setItem("token.key", token).then(()=>{
 			this.setState({token});
 		})  
 	}
@@ -60,13 +57,21 @@ class GitHubEdit extends React.Component{
 		}
 		return <Pages onPageSelected={this.openPage.bind(this)} />
 	}
+	getRoute(){
+		if(this.state.token == null){
+			return {
+				name: 'Login!',
+				component: Login
+			};
+		}
+
+		return {
+			name: 'Pages!',
+			component: Pages
+		};
+	}
 	render() {
-		return (
-				<View style={styles.container}>
-					<Badge title='Pages' />
-					{this.getContent()}
-				</View>
-		);
+		return <Router firstRoute={this.getRoute()} />;
 	}
 }
 

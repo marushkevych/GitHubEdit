@@ -26,7 +26,9 @@ class Editor extends React.Component{
 			sha: ''
 		}
 
-		api.getContent(this.props.url).then((res) => {
+		console.log('data', this.props.data)
+
+		api.getContent(this.props.data).then((res) => {
 			this.setState({
 				isLoading: false, 
 				content: b64_to_utf8(res.content),

@@ -1,5 +1,7 @@
 var React = require('react-native');
 var api = require('../Utils/api');
+var Pages = require('./Pages');
+
 
 var {
 	View,
@@ -7,6 +9,7 @@ var {
 	Text,
 	TouchableHighlight,
 	TextInput,
+	AsyncStorage
 } = React;
 
 
@@ -17,6 +20,15 @@ class Login extends React.Component{
 		this.state = {
 			token: ''
 		}
+	}
+
+	setToken(){
+		AsyncStorage.setItem("token.key", this.state.token).then(()=>{
+			this.props.toRoute({
+				name: "Pages",
+				component: Pages
+			});			
+		})
 	}
 
 	render(){
@@ -31,7 +43,7 @@ class Login extends React.Component{
 				</TextInput>
 				<TouchableHighlight
 					onPress={()=>{
-						this.props.onToken(this.state.token);
+						this.setToken();
 					}}
 					underlayColor='#88D485'
 					style={styleButton('#758BF4')}>
