@@ -5,12 +5,12 @@
 'use strict';
 
 var React = require('react-native');
-var Router = require('react-native-router');
 var Pages = require('./App/Components/Pages');
 var Badge = require('./App/Components/Badge');
 var Editor = require('./App/Components/Editor');
 var Login = require('./App/Components/Login');
 
+var Router = React.NavigatorIOS;
 
 var {
 	AppRegistry,
@@ -60,38 +60,32 @@ class GitHubEdit extends React.Component{
 	getRoute(){
 		if(this.state.token == null){
 			return {
-				name: 'Login!',
-				component: Login
+				title: 'Login!',
+				component: Login,
+				backButtonTitle: 'Logout',
 			};
 		}
 
 		return {
-			name: 'Pages!',
+			title: 'Pages!',
 			component: Pages
 		};
 	}
 	render() {
-		return <Router firstRoute={this.getRoute()} />;
+		return (
+			<Router 
+				style={styles.container} 
+				initialRoute={this.getRoute()} 
+				barTintColor='#48BBEC'/>
+		)
 	}
 }
 
 var styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		// justifyContent: 'center',
-		// alignItems: 'center',
-		// backgroundColor: '#F5FCFF',
-	},
-	welcome: {
-		fontSize: 20,
-		textAlign: 'center',
-		margin: 10,
-	},
-	instructions: {
-		textAlign: 'center',
-		color: '#333333',
-		marginBottom: 5,
-	},
+  container:{
+    flex: 1,
+    // backgroundColor: '#48BBEC',
+  },
 });
 
 AppRegistry.registerComponent('GitHubEdit', () => GitHubEdit);

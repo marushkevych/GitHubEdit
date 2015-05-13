@@ -10,10 +10,18 @@ var {
 		ScrollView,
 		Text,
 		TouchableHighlight,
-		ActivityIndicatorIOS
+		ActivityIndicatorIOS,
+		AsyncStorage
 } = React;
 
 var USER = 'marushkevych';
+
+var content;
+var sha;
+function setContent(newContent, newSha){
+	content = newContent;
+	sha = newSha;
+}
 
 
 class Pages extends React.Component{
@@ -32,12 +40,35 @@ class Pages extends React.Component{
 		});    
 	}   
 
+	save(url){
+		if(content == null){
+			return;
+		}
+		
+		var b64content = utf8_to_b64(content);
+		console.log('submitting content', b64content);
+		AsyncStorage.getItem("token.key").then((token)=>{
+			console.log('token is', token)
+			api.updatePage(url, b64content, sha, token).then((res) => {
+				// this.setState({isLoading: false});
+				console.log('Saved!!!!')
+			}, (err) => {
+				// this.setState({isLoading: false, error: "Failed to save changes"});
+				console.log('Error', err)
+			});      
+		})    
+	}	
+
 	openPage(url){
 		 // this.props.onPageSelected(url);
-		this.props.toRoute({
-			name: "Editor",
+		this.props.navigator.push({
+			title: "Editor",
 			component: Editor,
-			data: url
+			passProps: {url, setContent},
+			rightButtonTitle: 'Save',
+			onRightButtonPress: () => {
+				this.save(url);
+			},
 		});			 
 	}
 
@@ -74,6 +105,10 @@ class Pages extends React.Component{
 }
 
 module.exports = Pages;
+
+function utf8_to_b64( str ) {
+	return btoa(unescape(encodeURIComponent( str )));
+}
 
 
 var styles = StyleSheet.create({

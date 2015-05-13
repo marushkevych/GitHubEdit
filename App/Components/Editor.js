@@ -26,9 +26,9 @@ class Editor extends React.Component{
 			sha: ''
 		}
 
-		console.log('data', this.props.data)
+		console.log('url', this.props.url)
 
-		api.getContent(this.props.data).then((res) => {
+		api.getContent(this.props.url).then((res) => {
 			this.setState({
 				isLoading: false, 
 				content: b64_to_utf8(res.content),
@@ -52,9 +52,10 @@ class Editor extends React.Component{
 		})    
 	}
 	handleChange(e){
-		this.setState({
-			content: e.nativeEvent.text
-		})
+		// this.setState({
+		// 	content: e.nativeEvent.text
+		// });
+		this.props.setContent(e.nativeEvent.text, this.state.sha)
 	}
 
 	render(){
@@ -67,12 +68,6 @@ class Editor extends React.Component{
 					value={this.state.content}>
 				</TextInput>
 				<Text>{this.state.error ? this.state.error : ""}</Text>
-				<TouchableHighlight
-					onPress={this.save.bind(this)}
-					underlayColor='#88D485'
-					style={styleButton('#758BF4')}>
-					<Text style={styles.buttonText}>Save</Text>
-				</TouchableHighlight>
 			</ScrollView>
 		);
 	}
@@ -112,6 +107,7 @@ var styles = StyleSheet.create({
 		height: 300,
 		padding: 5,
 		fontSize: 12,
+		borderWidth: 1
 		// flex: 10
 	},
 	buttonText: {

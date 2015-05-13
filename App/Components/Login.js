@@ -18,14 +18,14 @@ class Login extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			token: ''
+			token: 'efff2c869b76dd163782a2ece66abdd9d1e03661'
 		}
 	}
 
 	setToken(){
 		AsyncStorage.setItem("token.key", this.state.token).then(()=>{
-			this.props.toRoute({
-				name: "Pages",
+			this.props.navigator.push({
+				title: "Pages",
 				component: Pages
 			});			
 		})
@@ -46,8 +46,8 @@ class Login extends React.Component{
 						this.setToken();
 					}}
 					underlayColor='#88D485'
-					style={styleButton('#758BF4')}>
-					<Text style={styles.buttonText}>save</Text>
+					style={styles.button}>
+					<Text style={styles.buttonText}>submit</Text>
 				</TouchableHighlight>				
 			</View>
 		);
@@ -57,30 +57,32 @@ class Login extends React.Component{
 
 module.exports = Login;
 
-function styleButton(backgroundColor){
-  return {
-    flexDirection: 'row',
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-    flex: 1,
-    backgroundColor: backgroundColor
-  };
-}
 
 var styles = StyleSheet.create({
 	container: {
-		flex: 1,
+	    flex: 1,
+	    padding: 30,
+	    marginTop: 65,
+	    flexDirection: 'column',
+	    // justifyContent: 'center',
+	    // backgroundColor: '#48BBEC',
+	    // alignItems: 'flex-start',
 	},
-	rowContainer: {
-		flexDirection: 'column',
-		flex: 1,
-		padding: 10
-	},  
 	textInput: {
 		height: 40,
 		padding: 5,
-		fontSize: 12,
-		// flex: 10
+		fontSize: 16,
+		// flex: 1,
+		borderWidth:1,
+		marginBottom: 20
+	},
+	button: {
+		height: 40,
+		flexDirection: 'row',
+		alignSelf: 'stretch',
+		justifyContent: 'center',
+		// flex: 1,
+		backgroundColor: '#758BF4'
 	},
 	buttonText: {
 		fontSize: 24,
