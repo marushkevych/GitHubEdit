@@ -1,4 +1,8 @@
+var React = require('react-native');
+var AsyncStorage = React.AsyncStorage;
+
 var URL = 'https://api.github.com/repos/marushkevych/marushkevych.github.io/contents/_posts';
+
 
 
 var api = {
@@ -8,29 +12,38 @@ var api = {
 	getContent: function(url){
 		return doFetch(url);
 	},
-    updatePage: function(url, content, sha, token){
+	createPage: function(url, content){
+		return this.updatePage(url, content);
+	},
+    updatePage: function(url, content, sha){
 
+    	return AsyncStorage.getItem("token.key").then((token)=>{
 
-    	var body = {
-		  message: "updating",
-		  committer: {
-		    name: "Andrey M",
-		    email: "marushkevych@gmail.com"
-		  },
-		  content: content,
-		  sha: sha
-		};
+	    	var body = {
+			  message: "updating",
+			  committer: {
+			    name: "Andrey M",
+			    email: "marushkevych@gmail.com"
+			  },
+			  content: content
+			};
 
-		var conf = 	{
-			method: 'put',
-		  	headers: {
-				'Authorization': 'token ' + token
-			},
-			body: JSON.stringify(body)
-		};
-    	console.log('updating request', conf)
+			if(sha){
+				body.sha = sha;
+			}
 
-		return doFetch(url, conf);		
+			var conf = 	{
+				method: 'put',
+			  	headers: {
+					'Authorization': 'token ' + token
+				},
+				body: JSON.stringify(body)
+			};
+	    	console.log('updating request', conf)
+
+			return doFetch(url, conf);		
+    	});
+    	
 
     },
 

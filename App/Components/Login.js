@@ -1,6 +1,7 @@
 var React = require('react-native');
 var api = require('../Utils/api');
 var Pages = require('./Pages');
+var CreatePage = require('./CreatePage');
 
 
 var {
@@ -31,7 +32,13 @@ class Login extends React.Component{
 		this.props.navigator.push({
 			title: "Pages",
 			component: Pages,
-			// backButtonTitle: 'Logout',
+			rightButtonTitle: 'New Page',
+			onRightButtonPress: () => {
+				this.props.navigator.push({
+					title: 'Create page',
+					component: CreatePage
+				});
+			},			
 		});			
 	}
 

@@ -4,7 +4,7 @@ var api = require('../Utils/api');
 var Editor = require('./Editor');
 var LoadingOverlay = require('./LoadingOverlay');
 var Document = require('../Model/Document');
-
+var Buffer = require('buffer').Buffer;
 
 var {
 	View,
@@ -12,8 +12,7 @@ var {
 		ScrollView,
 		Text,
 		TouchableHighlight,
-		ActivityIndicatorIOS,
-		AsyncStorage
+		ActivityIndicatorIOS
 } = React;
 
 var USER = 'marushkevych';
@@ -52,18 +51,16 @@ class Pages extends React.Component{
 
 		var b64content = utf8_to_b64(content);
 		console.log('submitting content', b64content);
-		AsyncStorage.getItem("token.key").then((token)=>{
-			console.log('token is', token)
-			api.updatePage(document.url, b64content, sha, token).then((res) => {
-				document.emit('SAVED_OK');
-				// this.setState({isLoading: false});
-				console.log('Saved!!!!')
-			}, (err) => {
-				document.emit('SAVED_ERROR');
-				// this.setState({isLoading: false, error: "Failed to save changes"});
-				console.log('Error', err)
-			});      
-		})    
+
+		api.updatePage(document.url, b64content, sha).then((res) => {
+			document.emit('SAVED_OK');
+			// this.setState({isLoading: false});
+			console.log('Saved!!!!')
+		}, (err) => {
+			document.emit('SAVED_ERROR');
+			// this.setState({isLoading: false, error: "Failed to save changes"});
+			console.log('Error', err)
+		});      
 	}	
 
 	openPage(url){
@@ -115,8 +112,9 @@ class Pages extends React.Component{
 module.exports = Pages;
 
 function utf8_to_b64( str ) {
-	return btoa(unescape(encodeURIComponent( str )));
+	return (new Buffer(str, 'utf8')).toString('base64');
 }
+
 
 
 var styles = StyleSheet.create({

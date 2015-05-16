@@ -2,6 +2,7 @@ var React = require('react-native');
 var Badge = require('./Badge');
 var api = require('../Utils/api');
 var LoadingOverlay = require('./LoadingOverlay');
+var Buffer = require('buffer').Buffer;
 
 var {
 	View,
@@ -83,11 +84,11 @@ class Editor extends React.Component{
 module.exports = Editor;
 
 function utf8_to_b64( str ) {
-	return btoa(unescape(encodeURIComponent( str )));
+	return (new Buffer(str, 'utf8')).toString('base64');
 }
 
 function b64_to_utf8( str ) {
-	return decodeURIComponent(escape(atob( str )));
+	return (new Buffer(str, 'base64')).toString('utf8');
 }
 
 function styleButton(backgroundColor){
@@ -110,7 +111,7 @@ var styles = StyleSheet.create({
 		padding: 10
 	},  
 	textInput: {
-		height: 350,
+		height: 250,
 		padding: 5,
 		fontSize: 12,
 		borderWidth: 1
