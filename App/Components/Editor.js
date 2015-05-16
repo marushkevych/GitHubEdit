@@ -1,6 +1,7 @@
 var React = require('react-native');
-var Separator = require('./Separator');
+var Badge = require('./Badge');
 var api = require('../Utils/api');
+var LoadingOverlay = require('./LoadingOverlay');
 
 var {
 	View,
@@ -26,7 +27,21 @@ class Editor extends React.Component{
 			sha: ''
 		}
 
-		console.log('url', this.props.url)
+		console.log('document', this.props.document)
+
+		this.props.document.on('SAVING', () => {
+			this.setState({isLoading: true});
+			console.log('SAVING event')
+		})
+
+		this.props.document.on('SAVED_OK', () => {
+			this.setState({isLoading: false});
+		})
+
+		this.props.document.on('SAVED_ERROR', () => {
+			this.setState({isLoading: false, error: "Failed to save changes"});
+		})
+
 
 		api.getContent(this.props.url).then((res) => {
 			this.setState({
@@ -39,18 +54,7 @@ class Editor extends React.Component{
 		});    
 	}   
 
-	save(){
-		var content = utf8_to_b64(this.state.content);
-		console.log('submitting content', content);
-		AsyncStorage.getItem(STORAGE_KEY).then((token)=>{
-			console.log('token is', token)
-			api.updatePage(this.props.url, content, this.state.sha, token).then((res) => {
-				this.setState({isLoading: false});
-			}, (err) => {
-				this.setState({isLoading: false, error: "Failed to save changes"});
-			});      
-		})    
-	}
+
 	handleChange(e){
 		// this.setState({
 		// 	content: e.nativeEvent.text
@@ -68,6 +72,7 @@ class Editor extends React.Component{
 					value={this.state.content}>
 				</TextInput>
 				<Text>{this.state.error ? this.state.error : ""}</Text>
+				<LoadingOverlay isVisible={this.state.isLoading} />
 			</ScrollView>
 		);
 	}

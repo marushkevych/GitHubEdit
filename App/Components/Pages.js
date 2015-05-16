@@ -2,6 +2,8 @@ var React = require('react-native');
 var Separator = require('./Separator');
 var api = require('../Utils/api');
 var Editor = require('./Editor');
+var LoadingOverlay = require('./LoadingOverlay');
+var Document = require('../Model/Document');
 
 
 var {
@@ -40,19 +42,24 @@ class Pages extends React.Component{
 		});    
 	}   
 
-	save(url){
+	save(document){
 		if(content == null){
 			return;
 		}
-		
+
+		// this.setState({isLoading: true});
+		document.emit('SAVING');
+
 		var b64content = utf8_to_b64(content);
 		console.log('submitting content', b64content);
 		AsyncStorage.getItem("token.key").then((token)=>{
 			console.log('token is', token)
-			api.updatePage(url, b64content, sha, token).then((res) => {
+			api.updatePage(document.url, b64content, sha, token).then((res) => {
+				document.emit('SAVED_OK');
 				// this.setState({isLoading: false});
 				console.log('Saved!!!!')
 			}, (err) => {
+				document.emit('SAVED_ERROR');
 				// this.setState({isLoading: false, error: "Failed to save changes"});
 				console.log('Error', err)
 			});      
@@ -60,14 +67,14 @@ class Pages extends React.Component{
 	}	
 
 	openPage(url){
-		 // this.props.onPageSelected(url);
+		var document = new Document(url);
 		this.props.navigator.push({
 			title: "Editor",
 			component: Editor,
-			passProps: {url, setContent},
+			passProps: {url, setContent, document},
 			rightButtonTitle: 'Save',
 			onRightButtonPress: () => {
-				this.save(url);
+				this.save(document);
 			},
 		});			 
 	}
@@ -98,6 +105,7 @@ class Pages extends React.Component{
 			<ScrollView style={styles.container} >
 				{list}     
 				<Text>{this.state.error ? this.state.error : ""}</Text>
+				<LoadingOverlay isVisible={this.state.isLoading} />
 			</ScrollView>
 		);
 	}

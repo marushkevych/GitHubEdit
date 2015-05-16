@@ -18,7 +18,7 @@ class Login extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			token: 'efff2c869b76dd163782a2ece66abdd9d1e03661'
+			token: '0fd910c159e01e7024301237e2c84ac63206b9bf'
 		}
 	}
 
