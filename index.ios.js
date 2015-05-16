@@ -24,58 +24,22 @@ var {
 
 
 class GitHubEdit extends React.Component{
-	constructor(props){
-		super(props);
-		this.state = {
-			token: null
-		};
 
 
-		AsyncStorage.getItem("token.key").then((token)=>{
-			this.setState({token});
-		})
-	}
-	openPage(url){
-		console.log('open page', url);
-		this.setState({
-			editing: true,
-			page: url
-		})
-	}
-	setToken(token){
-		AsyncStorage.setItem("token.key", token).then(()=>{
-			this.setState({token});
-		})  
-	}
-	getContent(){
-		if(this.state.token == null){
-			return <Login onToken={this.setToken.bind(this)} />
-		}
-
-		if(this.state.editing){
-				return <Editor url={this.state.page}/>
-		}
-		return <Pages onPageSelected={this.openPage.bind(this)} />
-	}
 	getRoute(){
-		if(this.state.token == null){
-			return {
-				title: 'Login!',
-				component: Login,
-				backButtonTitle: 'Logout',
-			};
-		}
 
 		return {
-			title: 'Pages!',
-			component: Pages
+			title: 'Login!',
+			component: Login,
+			backButtonTitle: 'Logout',
 		};
 	}
 	render() {
+
 		return (
 			<Router 
 				style={styles.container} 
-				initialRoute={this.getRoute()} 
+				initialRoute={this.getRoute()}
 				barTintColor='#48BBEC'/>
 		)
 	}

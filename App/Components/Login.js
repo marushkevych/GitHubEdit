@@ -18,16 +18,26 @@ class Login extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			token: '0fd910c159e01e7024301237e2c84ac63206b9bf'
+			token: ''
 		}
+
+
+		AsyncStorage.getItem("token.key").then((token)=>{
+			this.loadPages();
+		});
+	}
+
+	loadPages(){
+		this.props.navigator.push({
+			title: "Pages",
+			component: Pages,
+			// backButtonTitle: 'Logout',
+		});			
 	}
 
 	setToken(){
 		AsyncStorage.setItem("token.key", this.state.token).then(()=>{
-			this.props.navigator.push({
-				title: "Pages",
-				component: Pages
-			});			
+			this.loadPages();			
 		})
 	}
 
@@ -39,6 +49,7 @@ class Login extends React.Component{
 					onChange={(e) => {
 						this.setState({token: e.nativeEvent.text});
 					}}
+					placeholder='Paste your secure token'
 					value={this.state.token}>
 				</TextInput>
 				<TouchableHighlight
