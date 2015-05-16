@@ -69,6 +69,7 @@ class Editor extends React.Component{
 					style={styles.textInput}
 					multiline={true}
 					onChange={this.handleChange.bind(this)}
+					autoFocus={true}
 					value={this.state.content}>
 				</TextInput>
 				<Text>{this.state.error ? this.state.error : ""}</Text>
@@ -109,7 +110,7 @@ var styles = StyleSheet.create({
 		padding: 10
 	},  
 	textInput: {
-		height: 300,
+		height: 350,
 		padding: 5,
 		fontSize: 12,
 		borderWidth: 1
