@@ -20,10 +20,8 @@ var {
 
 
 var content;
-var sha;
-function setContent(newContent, newSha){
+function setContent(newContent){
 	content = newContent;
-	sha = newSha;
 }
 
 
@@ -57,7 +55,8 @@ class CreatePage extends React.Component{
 		var b64content = utf8_to_b64(content);
 		console.log('submitting content', b64content);
 
-		api.updatePage(document.url, b64content, sha).then((res) => {
+		api.updatePage(document.url, b64content, document.sha).then((res) => {
+			document.sha = res.content.sha;
 			document.emit('SAVED_OK');
 			// this.setState({isLoading: false});
 			console.log('Saved!!!!')
@@ -69,7 +68,7 @@ class CreatePage extends React.Component{
 	}	
 
 	openPage(url){
-		debugger;
+		// debugger;
 		var document = new Document(url);
 		this.props.navigator.push({
 			title: "Editor",

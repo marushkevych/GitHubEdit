@@ -45,6 +45,7 @@ class Editor extends React.Component{
 
 
 		api.getContent(this.props.url).then((res) => {
+			this.props.document.sha = res.sha;
 			this.setState({
 				isLoading: false, 
 				content: b64_to_utf8(res.content),
@@ -60,7 +61,7 @@ class Editor extends React.Component{
 		// this.setState({
 		// 	content: e.nativeEvent.text
 		// });
-		this.props.setContent(e.nativeEvent.text, this.state.sha)
+		this.props.setContent(e.nativeEvent.text)
 	}
 
 	render(){
