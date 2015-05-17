@@ -13,6 +13,9 @@ var {
 	AsyncStorage
 } = React;
 
+// var URL = 'https://api.github.com/repos/marushkevych/marushkevych.github.io/contents/_posts';
+var URL = 'https://api.github.com/repos/shamashka/shamashka.github.io/contents/_posts';
+
 
 
 class Login extends React.Component{
@@ -23,9 +26,9 @@ class Login extends React.Component{
 		}
 
 
-		AsyncStorage.getItem("token.key").then((token)=>{
-			this.loadPages();
-		});
+		// AsyncStorage.getItem("token.key").then((token)=>{
+		// 	this.loadPages();
+		// });
 	}
 
 	loadPages(){
@@ -33,10 +36,12 @@ class Login extends React.Component{
 			title: "Pages",
 			component: Pages,
 			rightButtonTitle: 'New Page',
+			passProps: {URL},
 			onRightButtonPress: () => {
 				this.props.navigator.push({
 					title: 'Create page',
-					component: CreatePage
+					component: CreatePage,
+					passProps: {URL},
 				});
 			},			
 		});			

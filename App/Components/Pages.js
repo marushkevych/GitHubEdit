@@ -15,7 +15,6 @@ var {
 		ActivityIndicatorIOS
 } = React;
 
-var USER = 'marushkevych';
 
 var content;
 function setContent(newContent){
@@ -32,9 +31,10 @@ class Pages extends React.Component{
 			error: false
 		}
 
-		api.getPages(USER).then((res) => {
+		api.getPages(this.props.URL).then((res) => {
 			this.setState({isLoading: false, pages: res});
 		}, (err) => {
+			console.log(err)
 			this.setState({isLoading: false, error: "Failes to get pages"});
 		});    
 	}   
@@ -67,7 +67,7 @@ class Pages extends React.Component{
 		this.props.navigator.push({
 			title: "Editor",
 			component: Editor,
-			passProps: {url, setContent, document},
+			passProps: {url, setContent, document, URL: this.props.URL},
 			rightButtonTitle: 'Save',
 			onRightButtonPress: () => {
 				this.save(document);

@@ -114,8 +114,9 @@ var styles = StyleSheet.create({
 	textInput: {
 		height: 250,
 		padding: 5,
-		fontSize: 12,
-		borderWidth: 1
+		fontSize: 14,
+		borderWidth: 1,
+		fontFamily: 'Verdana'
 		// flex: 10
 	},
 	buttonText: {

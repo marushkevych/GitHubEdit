@@ -1,12 +1,9 @@
 var React = require('react-native');
 var AsyncStorage = React.AsyncStorage;
 
-var URL = 'https://api.github.com/repos/marushkevych/marushkevych.github.io/contents/_posts';
-
-
 
 var api = {
-	getPages: function(username){
+	getPages: function(URL){
 		return doFetch(URL);
 	},	
 	getContent: function(url){

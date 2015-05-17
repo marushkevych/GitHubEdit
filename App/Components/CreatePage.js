@@ -3,11 +3,7 @@ var api = require('../Utils/api');
 var Editor = require('./Editor');
 var Buffer = require('buffer').Buffer;
 var Document = require('../Model/Document');
-
-
-var URL = 'https://api.github.com/repos/marushkevych/marushkevych.github.io/contents/_posts';
-
-
+var dateFormat = require('dateformat');
 
 var {
 	View,
@@ -24,6 +20,13 @@ function setContent(newContent){
 	content = newContent;
 }
 
+var header = '---\n'+
+'layout: post\n'+
+'category: \n'+
+'tagline: \n'+
+'tags : [ ]\n'+
+'---\n';
+
 
 class CreatePage extends React.Component{
 	constructor(props){
@@ -37,8 +40,9 @@ class CreatePage extends React.Component{
 
 
 	createPage(){
-		var url = URL+'/'+this.state.pageName;
-		api.createPage(url, utf8_to_b64('new page')).then((res) => {
+		var date = dateFormat(new Date(), "yyyy-mm-dd");
+		var url = `${this.props.URL}/${date}-${this.state.pageName}.md`;
+		api.createPage(url, utf8_to_b64(header)).then((res) => {
 			console.log('create page response', res);
 			this.openPage(res.content.url);
 		})

@@ -20,6 +20,7 @@ var {
 	AsyncStorage
 } = React;
 
+
 // AsyncStorage.removeItem("token.key")
 
 
