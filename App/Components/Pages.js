@@ -48,13 +48,11 @@ class Pages extends React.Component{
 		document.emit('SAVING');
 
 		var b64content = utf8_to_b64(content);
-		console.log('submitting content', b64content);
 
 		api.updatePage(document.url, b64content, document.sha).then((res) => {
 			document.sha = res.content.sha;
 			document.emit('SAVED_OK');
 			// this.setState({isLoading: false});
-			console.log('Saved!!!!')
 		}, (err) => {
 			document.emit('SAVED_ERROR');
 			// this.setState({isLoading: false, error: "Failed to save changes"});
@@ -77,7 +75,6 @@ class Pages extends React.Component{
 
 	render(){
 		var pages = this.state.pages;
-		console.log('pages', this.state.pages);
 
 		var list = pages.map((page, index) => {
 			return (

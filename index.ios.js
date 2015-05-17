@@ -33,6 +33,7 @@ class GitHubEdit extends React.Component{
 			title: 'Login!',
 			component: Login,
 			backButtonTitle: 'Logout',
+
 		};
 	}
 	render() {

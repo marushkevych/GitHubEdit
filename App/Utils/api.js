@@ -36,7 +36,6 @@ var api = {
 				},
 				body: JSON.stringify(body)
 			};
-	    	console.log('updating request', conf)
 
 			return doFetch(url, conf);		
     	});
@@ -51,7 +50,6 @@ var api = {
 
 function doFetch(url, conf){
 	return fetch(url, conf).then((res) => {
-		console.log('got response', res)
 		return res.json().then((json) => {
 			console.log('got response json', json)
 			if(res.status >= 400){

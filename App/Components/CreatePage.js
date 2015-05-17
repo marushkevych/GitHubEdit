@@ -43,7 +43,6 @@ class CreatePage extends React.Component{
 		var date = dateFormat(new Date(), "yyyy-mm-dd");
 		var url = `${this.props.URL}/${date}-${this.state.pageName}.md`;
 		api.createPage(url, utf8_to_b64(header)).then((res) => {
-			console.log('create page response', res);
 			this.openPage(res.content.url);
 		})
 	}
@@ -57,13 +56,11 @@ class CreatePage extends React.Component{
 		document.emit('SAVING');
 
 		var b64content = utf8_to_b64(content);
-		console.log('submitting content', b64content);
 
 		api.updatePage(document.url, b64content, document.sha).then((res) => {
 			document.sha = res.content.sha;
 			document.emit('SAVED_OK');
 			// this.setState({isLoading: false});
-			console.log('Saved!!!!')
 		}, (err) => {
 			document.emit('SAVED_ERROR');
 			// this.setState({isLoading: false, error: "Failed to save changes"});
@@ -90,6 +87,7 @@ class CreatePage extends React.Component{
 		return(
 			<View style={styles.container}>
 				<TextInput
+					autoFocus={true}
 					style={styles.textInput}
 					onChange={(e) => {
 						this.setState({pageName: e.nativeEvent.text});

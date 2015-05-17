@@ -28,11 +28,9 @@ class Editor extends React.Component{
 			sha: ''
 		}
 
-		console.log('document', this.props.document)
 
 		this.props.document.on('SAVING', () => {
 			this.setState({isLoading: true});
-			console.log('SAVING event')
 		})
 
 		this.props.document.on('SAVED_OK', () => {

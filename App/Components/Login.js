@@ -13,23 +13,36 @@ var {
 	AsyncStorage
 } = React;
 
-// var URL = 'https://api.github.com/repos/marushkevych/marushkevych.github.io/contents/_posts';
-var URL = 'https://api.github.com/repos/shamashka/shamashka.github.io/contents/_posts';
+var URL = 'https://api.github.com/repos/marushkevych/marushkevych.github.io/contents/_posts';
+// var URL = 'https://api.github.com/repos/shamashka/shamashka.github.io/contents/_posts';
 
 
 
 class Login extends React.Component{
 	constructor(props){
 		super(props);
+
 		this.state = {
 			token: ''
 		}
 
-
-		// AsyncStorage.getItem("token.key").then((token)=>{
-		// 	this.loadPages();
-		// });
+		AsyncStorage.getItem("token.key").then((token)=>{
+			if(token){
+				this.loadPages();
+				// this.setState({token});
+			}
+		});
 	}
+	componentWillReceiveProps(){
+		console.log('componentWillReceiveProps is called')
+		this.setState({token: ''})
+	}
+
+	// shouldComponentUpdate(){
+	// 	console.log('shouldComponentUpdate is called')
+	// 	this.token = '';
+	// 	return false;
+	// }
 
 	loadPages(){
 		this.props.navigator.push({
@@ -43,7 +56,14 @@ class Login extends React.Component{
 					component: CreatePage,
 					passProps: {URL},
 				});
-			},			
+			},
+			leftButtonTitle: 'logout',
+			onLeftButtonPress: () => {
+				console.log('logout button pressed')
+				AsyncStorage.removeItem("token.key").then(()=>{
+					this.props.navigator.pop();
+				})
+			}			
 		});			
 	}
 
@@ -57,6 +77,7 @@ class Login extends React.Component{
 		return(
 			<View style={styles.container}>
 				<TextInput
+					autoFocus={true}
 					style={styles.textInput}
 					onChange={(e) => {
 						this.setState({token: e.nativeEvent.text});
@@ -84,7 +105,7 @@ module.exports = Login;
 var styles = StyleSheet.create({
 	container: {
 	    flex: 1,
-	    padding: 30,
+	    padding: 20,
 	    marginTop: 65,
 	    flexDirection: 'column',
 	    // justifyContent: 'center',
@@ -94,7 +115,7 @@ var styles = StyleSheet.create({
 	textInput: {
 		height: 40,
 		padding: 5,
-		fontSize: 16,
+		fontSize: 12,
 		// flex: 1,
 		borderWidth:1,
 		marginBottom: 20
