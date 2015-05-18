@@ -5,6 +5,9 @@ var Buffer = require('buffer').Buffer;
 var Document = require('../Model/Document');
 var dateFormat = require('dateformat');
 
+var ContentService = require('../Model/ContentService');
+
+
 var {
 	View,
 	StyleSheet,
@@ -20,13 +23,6 @@ function setContent(newContent){
 	content = newContent;
 }
 
-var header = '---\n'+
-'layout: post\n'+
-'category: \n'+
-'tagline: \n'+
-'tags : [ ]\n'+
-'---\n';
-
 
 class CreatePage extends React.Component{
 	constructor(props){
@@ -34,7 +30,6 @@ class CreatePage extends React.Component{
 		this.state = {
 			pageName: ''
 		}
-
 
 	}
 
@@ -44,11 +39,10 @@ class CreatePage extends React.Component{
 			return;
 		}
 
-		var date = dateFormat(new Date(), "yyyy-mm-dd");
-		var url = `${this.props.URL}/${date}-${this.state.pageName}.md`;
-		api.createPage(url, utf8_to_b64(header)).then((res) => {
-			this.openPage(res.content.url);
-		})
+		ContentService.createPage(this.state.pageName).then((url) => {
+			this.openPage(url);
+		});
+
 	}
 
 	save(document){

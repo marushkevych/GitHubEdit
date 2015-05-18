@@ -3,6 +3,7 @@ var Badge = require('./Badge');
 var api = require('../Utils/api');
 var LoadingOverlay = require('./LoadingOverlay');
 var Buffer = require('buffer').Buffer;
+var ContentService = require('../Model/ContentService');
 
 var {
 	View,
@@ -27,6 +28,14 @@ class Editor extends React.Component{
 			error: false,
 			sha: ''
 		}
+
+		ContentService.on('loading', () => {
+			this.setState({isLoading: true});
+		});	
+
+		ContentService.on('change', () => {
+			this.setState({isLoading: false});
+		});		
 
 
 		this.props.document.on('SAVING', () => {

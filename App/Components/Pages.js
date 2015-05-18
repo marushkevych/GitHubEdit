@@ -4,6 +4,7 @@ var api = require('../Utils/api');
 var Editor = require('./Editor');
 var LoadingOverlay = require('./LoadingOverlay');
 var Document = require('../Model/Document');
+var ContentService = require('../Model/ContentService');
 var Buffer = require('buffer').Buffer;
 
 var {
@@ -31,12 +32,15 @@ class Pages extends React.Component{
 			error: false
 		}
 
-		api.getPages(this.props.URL).then((res) => {
-			this.setState({isLoading: false, pages: res});
-		}, (err) => {
-			console.log(err)
-			this.setState({isLoading: false, error: "Failes to get pages"});
-		});    
+		ContentService.loadFolder(this.props.URL);
+		
+		ContentService.on('loading', () => {
+			this.setState({isLoading: true});
+		});		
+		ContentService.on('change', () => {
+			this.setState({isLoading: false, pages: ContentService.pages});
+		});
+
 	}   
 
 	save(document){
