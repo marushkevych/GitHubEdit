@@ -40,6 +40,10 @@ class CreatePage extends React.Component{
 
 
 	createPage(){
+		if(this.state.pageName == null || this.state.pageName.trim().length == 0){
+			return;
+		}
+		
 		var date = dateFormat(new Date(), "yyyy-mm-dd");
 		var url = `${this.props.URL}/${date}-${this.state.pageName}.md`;
 		api.createPage(url, utf8_to_b64(header)).then((res) => {

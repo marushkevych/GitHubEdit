@@ -23,7 +23,7 @@ class Login extends React.Component{
 		super(props);
 
 		this.state = {
-			token: ''
+			token: null
 		}
 
 		AsyncStorage.getItem("token.key").then((token)=>{
@@ -68,6 +68,10 @@ class Login extends React.Component{
 	}
 
 	setToken(){
+		if(this.state.token == null || this.state.token.trim().length == 0){
+			return;
+		}
+
 		AsyncStorage.setItem("token.key", this.state.token).then(()=>{
 			this.loadPages();			
 		})
