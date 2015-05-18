@@ -13,8 +13,8 @@ var {
 	AsyncStorage
 } = React;
 
-// var URL = 'https://api.github.com/repos/marushkevych/marushkevych.github.io/contents/_posts';
-var URL = 'https://api.github.com/repos/shamashka/shamashka.github.io/contents/_posts';
+var URL = 'https://api.github.com/repos/marushkevych/marushkevych.github.io/contents/_posts';
+// var URL = 'https://api.github.com/repos/shamashka/shamashka.github.io/contents/_posts';
 
 
 
@@ -33,15 +33,15 @@ class Login extends React.Component{
 			}
 		});
 	}
-	// componentWillReceiveProps(){
-	// 	console.log('componentWillReceiveProps is called')
-	// 	this.setState({token: ''})
-	// }
+	componentWillReceiveProps(){
+		console.log('componentWillReceiveProps is called')
+		this.setState({token: ''})
+	}
 
 	// shouldComponentUpdate(){
 	// 	console.log('shouldComponentUpdate is called')
 	// 	this.token = '';
-	// 	return false;
+	// 	return true;
 	// }
 
 	loadPages(){
@@ -57,13 +57,13 @@ class Login extends React.Component{
 					passProps: {URL},
 				});
 			},
-			// leftButtonTitle: 'logout',
-			// onLeftButtonPress: () => {
-			// 	console.log('logout button pressed')
-			// 	AsyncStorage.removeItem("token.key").then(()=>{
-			// 		this.props.navigator.pop();
-			// 	})
-			// }			
+			leftButtonTitle: 'logout',
+			onLeftButtonPress: () => {
+				console.log('logout button pressed')
+				AsyncStorage.removeItem("token.key").then(()=>{
+					this.props.navigator.pop();
+				})
+			}			
 		});			
 	}
 
