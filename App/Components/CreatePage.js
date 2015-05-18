@@ -43,7 +43,7 @@ class CreatePage extends React.Component{
 		if(this.state.pageName == null || this.state.pageName.trim().length == 0){
 			return;
 		}
-		
+
 		var date = dateFormat(new Date(), "yyyy-mm-dd");
 		var url = `${this.props.URL}/${date}-${this.state.pageName}.md`;
 		api.createPage(url, utf8_to_b64(header)).then((res) => {
@@ -75,7 +75,7 @@ class CreatePage extends React.Component{
 	openPage(url){
 		// debugger;
 		var document = new Document(url);
-		this.props.navigator.push({
+		this.props.navigator.replace({
 			title: "Editor",
 			component: Editor,
 			passProps: {url, setContent, document},
