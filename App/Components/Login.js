@@ -4,6 +4,9 @@ var Pages = require('./Pages');
 var CreatePage = require('./CreatePage');
 
 
+// var URL = 'https://api.github.com/repos/marushkevych/marushkevych.github.io/contents/_posts';
+var URL = 'https://api.github.com/repos/shamashka/shamashka.github.io/contents/_posts';
+
 var {
 	View,
 	StyleSheet,
@@ -12,9 +15,6 @@ var {
 	TextInput,
 	AsyncStorage
 } = React;
-
-var URL = 'https://api.github.com/repos/marushkevych/marushkevych.github.io/contents/_posts';
-// var URL = 'https://api.github.com/repos/shamashka/shamashka.github.io/contents/_posts';
 
 
 
@@ -45,7 +45,7 @@ class Login extends React.Component{
 	// }
 
 	loadPages(){
-		this.props.navigator.push({
+		var pagesRoute = {
 			title: "Pages",
 			component: Pages,
 			rightButtonTitle: 'New Page',
@@ -54,7 +54,7 @@ class Login extends React.Component{
 				this.props.navigator.push({
 					title: 'Create page',
 					component: CreatePage,
-					passProps: {URL},
+					passProps: {URL, PagesRoute: pagesRoute}
 				});
 			},
 			leftButtonTitle: 'logout',
@@ -64,7 +64,9 @@ class Login extends React.Component{
 					this.props.navigator.pop();
 				})
 			}			
-		});			
+		};
+
+		this.props.navigator.push(pagesRoute);			
 	}
 
 	setToken(){
@@ -83,8 +85,8 @@ class Login extends React.Component{
 				<TextInput
 					autoFocus={true}
 					style={styles.textInput}
-					onChange={(e) => {
-						this.setState({token: e.nativeEvent.text});
+					onChangeText={(text) => {
+						this.setState({token: text});
 					}}
 					placeholder='Paste your secure token'
 					value={this.state.token}>

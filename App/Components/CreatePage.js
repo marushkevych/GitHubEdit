@@ -69,7 +69,7 @@ class CreatePage extends React.Component{
 	openPage(url){
 		// debugger;
 		var document = new Document(url);
-		this.props.navigator.replace({
+		this.props.navigator.push({
 			title: "Editor",
 			component: Editor,
 			passProps: {url, setContent, document},
@@ -77,6 +77,10 @@ class CreatePage extends React.Component{
 			onRightButtonPress: () => {
 				this.save(document);
 			},
+			leftButtonTitle: 'Pages',
+			onLeftButtonPress: ()  => {
+				this.props.navigator.popToRoute(this.props.PagesRoute);
+			}
 		});			 
 	}	
 
@@ -90,7 +94,7 @@ class CreatePage extends React.Component{
 					onChange={(e) => {
 						this.setState({pageName: e.nativeEvent.text});
 					}}
-					placeholder='file name'
+					placeholder='Title'
 					value={this.state.pageName}>
 				</TextInput>
 				<TouchableHighlight
